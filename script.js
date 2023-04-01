@@ -9,7 +9,7 @@ var synth = window.speechSynthesis;
 var grammar = "#JSGF V1.0; grammar calendar; public <calendar> =  ...;";
 
 //Regular expressions for the different utternaces
-var u1=/.*book event$/i;
+var u1=/.*book (.|an) event$/;
 var u2=/.*book an event from (.*)$/i;
 var u3=/.*book an event from (.*) to (.*)$/i;
 
