@@ -9,9 +9,9 @@ var synth = window.speechSynthesis;
 var grammar = "#JSGF V1.0; grammar calendar; public <calendar> =  ...;";
 
 //Regular expressions for the different utternaces
-var u1=/.*book (.|an) event$/;
-var u2=/.*book an event from (.*)$/i;
-var u3=/.*book an event from (.*) to (.*)$/i;
+var u1=/.*book (.|an) even(t|ts)$/;
+var u2=/.*book an even(t|ts) from (.*)$/i;
+var u3=/.*book an even(t|ts) from (.*) to (.*)$/i;
 
 var u4=/(?:from)?\s*(.*)/i;
 var u5=/(?:to)?\s*(.*)/i;
