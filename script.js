@@ -8,12 +8,21 @@ var synth = window.speechSynthesis;
 
 var grammar = "#JSGF V1.0; grammar calendar; public <calendar> =  ...;";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const d = new Date();
+const year = d.getFullYear();
+const month = months[d.getMonths()];
+const day = d.getDate();
+
 //Regular expressions for the different utternaces
+var r1 = /.*read(| my) even(t|ts)$/;
+var r2 = /.*read(| my) even(t|ts) for ([1-31]) (January|February|March|April|May|June|July|August|September|October|November|December)(| 20[2-9][0-9])$/;
+
 var u1 = /.*book(| a| an) even(t|ts)$/;
-var u2 = /.*book(| a| an) even(t|ts) from ((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)*$/i;
-var u3 = /.*book(| a| an) even(t|ts) from ((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.) to ((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)*$/i 
-var u4 = /(?:from)?\s*((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)$/i;
-var u5 = /(?:to)?\s*((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)$/i;
+var u2 = /.*book(| a| an) even(t|ts) from (((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)) ([1-31]) (january|february|march|april|may|june|july|august|september|october|november|december)(| 20[2-9][0-9])*$/i;
+var u3 = /.*book(| a| an) even(t|ts) from ((((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)) ([1-31]) (January|February|March|April|May|June|July|August|September|October|November|December)(| 20[2-9][0-9]) to (((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)) ([1-31]) (January|February|March|April|May|June|July|August|September|October|November|December)(| 20[2-9][0-9])*$/i 
+var u4 = /(?:from)?\s*(((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)) ([1-31]) (january|february|march|april|may|june|july|august|september|october|november|december)(| 20[2-9][0-9])$/i;
+var u5 = /(?:to)?\s*(((1[0-2]|0?[1-9])|(1[0-2]|0?[1-9]):([0-5]?[0-9]))(| a\.m\.| p\.m\.)) ([1-31]) (january|february|march|april|may|june|july|august|september|october|november|december)(| 20[2-9][0-9])$/i;
 
 
 var recognition = new SpeechRecognition();
@@ -108,6 +117,9 @@ recognition.onresult = function (event) {
   // What speech we are expecting depends on the state we're in:
   switch (state) {
     case 0:
+      if (m = text.match(r1)) {console.log(m);}
+      else if (m = text.match(r2)){console.log(m);}
+      else { continue;}
       if (text.match(u1)) { enterState(1); }
       else if (m = text.match(u3)) { if (m[12]==' '){ret=m[3]+" "+"p.m."}else{ret=m[3]+" "+m[7]};startPlace=ret;  if (m[12==' ']){ret2=m[8]+" "+"p.m."} else{ ret2=m[8]+" "+m[12]};endPlace=ret2; console.log(m); enterState(5);} // "...from .... to ..."
       else if (m = text.match(u2)) { if (m[12]==' '){ret=m[3]+" "+"p.m."}else{ret=m[3]+" "+m[7]};startPlace=ret; console.log(m);enterState(3); } // "...from ...."
